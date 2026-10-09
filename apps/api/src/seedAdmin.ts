@@ -1,0 +1,12 @@
+import 'dotenv/config';
+import { Pool } from 'pg';
+import crypto from 'node:crypto';
+const pool=new Pool({connectionString:process.env.DATABASE_URL});
+const email=(process.env.ADMIN_EMAIL??'admin@civictrack.local').toLowerCase();
+const password=process.env.ADMIN_PASSWORD??'ChangeMe123!';
+const name=process.env.ADMIN_NAME??'CivicTrack Administrator';
+if(password.length<8) throw new Error('ADMIN_PASSWORD must be at least 8 characters');
+const hash=crypto.scryptSync(password,process.env.PASSWORD_SALT??'civictrack-local-salt',64).toString('hex');
+const r=await pool.query(`INSERT INTO users(name,email,password_hash,role) VALUES($1,$2,$3,'ADMIN') ON CONFLICT(email) DO UPDATE SET name=EXCLUDED.name,password_hash=EXCLUDED.password_hash,role='ADMIN',status='ACTIVE' RETURNING id,name,email,role`,[name,email,hash]);
+console.log(`Admin ready: ${r.rows[0].email}`);
+await pool.end();

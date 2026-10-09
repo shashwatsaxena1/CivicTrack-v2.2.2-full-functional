@@ -1,0 +1,32 @@
+{
+  "name": "@civictrack/api",
+  "version": "2.2.2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "test": "vitest run",
+    "db:migrate": "tsx src/migrate.ts",
+    "db:seed-admin": "tsx src/seedAdmin.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.0",
+    "@fastify/helmet": "^13.0.0",
+    "fastify": "^5.0.0",
+    "zod": "^3.25.0",
+    "pg": "^8.16.0",
+    "@fastify/cookie": "^11.0.0",
+    "@fastify/multipart": "^9.0.0",
+    "@aws-sdk/client-s3": "^3.883.0",
+    "@aws-sdk/s3-request-presigner": "^3.883.0",
+    "dotenv": "^17.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.3",
+    "tsx": "^4.23.15",
+    "vitest": "^3.2.7"
+  }
+}

@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgis/postgis:16-3.5
+    container_name: civictrack-postgres
+    environment:
+      POSTGRES_DB: civictrack
+      POSTGRES_USER: civictrack
+      POSTGRES_PASSWORD: civictrack
+    ports:
+      - "5432:5432"
+    volumes:
+      - civictrack_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U civictrack -d civictrack"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  minio:
+    image: pgsty/minio:latest
+    container_name: civictrack-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - civictrack_minio:/data
+volumes:
+  civictrack_pg:
+  civictrack_minio:

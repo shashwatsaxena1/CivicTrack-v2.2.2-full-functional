@@ -1,0 +1,1 @@
+{"name":"@civictrack/validation","version":"2.2.2","private":true,"dependencies":{"zod":"^3.25.0"},"exports":{".":"./src/index.ts"}}
